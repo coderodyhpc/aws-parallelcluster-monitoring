@@ -22,12 +22,24 @@ case "${cfn_cluster_user}" in
 	;;
 	
 	centos)
-		dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-		dnf install docker-ce --nobest -y
-		systemctl enable --now docker
-		usermod -a -G docker $cfn_cluster_user
-		curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-		chmod +x /usr/local/bin/docker-compose
+		version=$(rpm --eval %{centos_ver})
+		case "${version}" in
+		8)
+			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+			dnf install docker-ce --nobest -y
+			systemctl enable --now docker
+			usermod -a -G docker $cfn_cluster_user
+			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+			chmod +x /usr/local/bin/docker-compose
+		;;
+		7)
+			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+			yum install docker-ce docker-ce-cli containerd.io -y
+			systemctl start docker
+			usermod -a -G docker $cfn_cluster_user
+			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+			chmod +x /usr/local/bin/docker-compose
+		;;
 	;;
 esac
 
