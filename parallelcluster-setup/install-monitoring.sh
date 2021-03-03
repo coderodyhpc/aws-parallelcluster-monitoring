@@ -126,7 +126,7 @@ case "${cfn_node_type}" in
 		if [[ $compute_instance_type =~ $gpu_instances ]]; then
 			distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 			curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | tee /etc/yum.repos.d/nvidia-docker.repo
-			if [[${cfn_cluster_user} == centos]] && [[${version} == 8]] then
+			if [[${cfn_cluster_user} == centos]] && [[${version} == 8]]; then
 				dnf -y clean expire-cache
 				dnf -y install nvidia-docker2
 			else
