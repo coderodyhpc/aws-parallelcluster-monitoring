@@ -55,7 +55,7 @@ monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 
 case "${cfn_node_type}" in
 	MasterServer)
-
+		touch /home/centos/tonto.txt
 		#cfn_efs=$(cat /etc/chef/dna.json | grep \"cfn_efs\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		#cfn_cluster_cw_logging_enabled=$(cat /etc/chef/dna.json | grep \"cfn_cluster_cw_logging_enabled\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		cfn_fsx_fs_id=$(cat /etc/chef/dna.json | grep \"cfn_fsx_fs_id\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
@@ -66,7 +66,7 @@ case "${cfn_node_type}" in
 		cluster_config_s3_key=$(cat /etc/chef/dna.json | grep \"cluster_config_s3_key\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		cluster_config_version=$(cat /etc/chef/dna.json | grep \"cluster_config_version\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		log_group_names="\/aws\/parallelcluster\/$(echo ${stack_name} | cut -d "-" -f2-)"
-
+		echo "midlle1 " >> /home/centos/tonto.txt
 		aws s3api get-object --bucket $cluster_s3_bucket --key $cluster_config_s3_key --region $cfn_region --version-id $cluster_config_version ${monitoring_home}/parallelcluster-setup/cluster-config.json
 
 		yum -y install golang-bin 
@@ -80,7 +80,7 @@ case "${cfn_node_type}" in
 	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /usr/local/bin/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
 		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /usr/local/bin/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
 
-
+		echo "midlle2 " >> /home/centos/tonto.txt
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
 		sed -i "s/__INSTANCE_ID__/${master_instance_id}/g"  	${monitoring_home}/grafana/dashboards/ParallelCluster.json 
@@ -120,30 +120,34 @@ case "${cfn_node_type}" in
 		GOPATH=/root/go-modules-cache HOME=/root go mod download
 		GOPATH=/root/go-modules-cache HOME=/root go build
 		mv ${monitoring_home}/prometheus-slurm-exporter/prometheus-slurm-exporter /usr/bin/prometheus-slurm-exporter
-
+		echo "midlle3 " >> /home/centos/tonto.txt
 		systemctl daemon-reload
 		systemctl enable slurm_exporter
 		systemctl start slurm_exporter
+		echo "END " >> /home/centos/tonto.txt
 	;;
 
 	ComputeFleet)
 		compute_instance_type=$(ec2-metadata -t | awk '{print $2}')
-		gpu_instances="[pg][2-9].*\.[0-9]*[x]*large"
-		if [[ $compute_instance_type =~ $gpu_instances ]]; then
-			distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-			curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | tee /etc/yum.repos.d/nvidia-docker.repo
-			if [[${cfn_cluster_user} == centos]] && [[${version} == 8]]; then
-				dnf -y clean expire-cache
-				dnf -y install nvidia-docker2
-			else
-				yum -y clean expire-cache
-				yum -y install nvidia-docker2
-			fi
-			systemctl restart docker
-			/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.gpu.yml -p monitoring-compute up -d
-		else
-			/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.yml -p monitoring-compute up -d
-        	fi
+#		gpu_instances="[pg][2-9].*\.[0-9]*[x]*large"
+		touch /home/centos/III.txt
+		echo $compute_instance_type >> /home/centos/III.txt
+#		echo $compute_instance_type >> /home/centos/III.txt
+#		if [[ $compute_instance_type =~ $gpu_instances ]]; then
+#			distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+#			curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | tee /etc/yum.repos.d/nvidia-docker.repo
+#			if [[${cfn_cluster_user} == centos]] && [[${version} == 8]]; then
+#				dnf -y clean expire-cache
+#				dnf -y install nvidia-docker2
+#			else
+#				yum -y clean expire-cache
+#				yum -y install nvidia-docker2
+#			fi
+#			systemctl restart docker
+#			/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.gpu.yml -p monitoring-compute up -d
+#		else
+#			/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.yml -p monitoring-compute up -d
+#        	fi
 
 	;;
 esac
