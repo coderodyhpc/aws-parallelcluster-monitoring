@@ -8,6 +8,8 @@
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
+touch /home/centos/idio.txt
+echo ${cfn_cluster_user} >> /home/centos/idio.txt
 
 case "${cfn_cluster_user}" in
 	ec2-user)
