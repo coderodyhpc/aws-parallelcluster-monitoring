@@ -25,8 +25,8 @@ case "${cfn_cluster_user}" in
 	
 	centos)
 		version=$(rpm --eval %{centos_ver})
-		case "${version}" in
 		echo ${version} >> /home/centos/idio.txt
+		case "${version}" in
 		8)
 			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 			dnf install docker-ce --nobest -y
