@@ -10,45 +10,46 @@
 . /etc/parallelcluster/cfnconfig
 touch /home/centos/idio.txt
 echo ${cfn_cluster_user} >> /home/centos/idio.txt
+systemctl enable --now docker
 
-case "${cfn_cluster_user}" in
-	ec2-user)
-		yum -y install docker
-		service docker start
-		chkconfig docker on
-		usermod -a -G docker $cfn_cluster_user
-
-#to be replaced with yum -y install docker-compose as the repository problem is fixed
-		curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-		chmod +x /usr/local/bin/docker-compose
-	;;
+#case "${cfn_cluster_user}" in
+#	ec2-user)
+#		yum -y install docker
+#		service docker start
+#		chkconfig docker on
+#		usermod -a -G docker $cfn_cluster_user
+#
+##to be replaced with yum -y install docker-compose as the repository problem is fixed
+#		curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#		chmod +x /usr/local/bin/docker-compose
+#	;;
 	
-	centos)
-		version=$(rpm --eval %{centos_ver})
-		echo ${version} >> /home/centos/idio.txt
-		case "${version}" in
-		8)
-			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-			dnf install docker-ce --nobest -y
-			systemctl enable --now docker
-			usermod -a -G docker $cfn_cluster_user
-			echo "middle docker" >> /home/centos/idio.txt
-			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-			chmod +x /usr/local/bin/docker-compose
-			echo "end docker" >> /home/centos/idio.txt
+#	centos)
+#		version=$(rpm --eval %{centos_ver})
+#		echo ${version} >> /home/centos/idio.txt
+#		case "${version}" in
+#		8)
+#			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+#			dnf install docker-ce --nobest -y
+#			systemctl enable --now docker
+#			usermod -a -G docker $cfn_cluster_user
+#			echo "middle docker" >> /home/centos/idio.txt
+#			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+#			chmod +x /usr/local/bin/docker-compose
+#			echo "end docker" >> /home/centos/idio.txt
 
-		;;
-		7)
-			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-			yum install docker-ce docker-ce-cli containerd.io -y
-			systemctl start docker
-			usermod -a -G docker $cfn_cluster_user
-			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-			chmod +x /usr/local/bin/docker-compose
-		;;
-		esac
-	;;
-esac
+#		;;
+#		7)
+#			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+#			yum install docker-ce docker-ce-cli containerd.io -y
+#			systemctl start docker
+#			usermod -a -G docker $cfn_cluster_user
+#			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+#			chmod +x /usr/local/bin/docker-compose
+#		;;
+#		esac
+#	;;
+#esac
 
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
@@ -80,7 +81,7 @@ case "${cfn_node_type}" in
 	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /usr/local/bin/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
 		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /usr/local/bin/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
 
-		echo "midlle2 " >> /home/centos/tonto.txt
+#		echo "midlle2 " >> /home/centos/tonto.txt
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
 		sed -i "s/__INSTANCE_ID__/${master_instance_id}/g"  	${monitoring_home}/grafana/dashboards/ParallelCluster.json 
