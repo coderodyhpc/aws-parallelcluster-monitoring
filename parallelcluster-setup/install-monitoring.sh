@@ -1,10 +1,5 @@
 #!/bin/bash -i
 #
-#
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
-#
-#
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
@@ -12,47 +7,50 @@ touch /home/centos/idio.txt
 echo ${cfn_cluster_user} >> /home/centos/idio.txt
 systemctl enable --now docker
 
-#case "${cfn_cluster_user}" in
-#	ec2-user)
-#		yum -y install docker
-#		service docker start
-#		chkconfig docker on
-#		usermod -a -G docker $cfn_cluster_user
-#
-##to be replaced with yum -y install docker-compose as the repository problem is fixed
-#		curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#		chmod +x /usr/local/bin/docker-compose
-#	;;
-	
-#	centos)
-#		version=$(rpm --eval %{centos_ver})
-#		echo ${version} >> /home/centos/idio.txt
-#		case "${version}" in
-#		8)
-#			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-#			dnf install docker-ce --nobest -y
-#			systemctl enable --now docker
-#			usermod -a -G docker $cfn_cluster_user
-#			echo "middle docker" >> /home/centos/idio.txt
-#			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-#			chmod +x /usr/local/bin/docker-compose
-#			echo "end docker" >> /home/centos/idio.txt
+case "${cfn_cluster_user}" in
+	ec2-user)
+		yum -y install docker
+		service docker start
+		chkconfig docker on
+		usermod -a -G docker $cfn_cluster_user
 
-#		;;
-#		7)
-#			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-#			yum install docker-ce docker-ce-cli containerd.io -y
-#			systemctl start docker
-#			usermod -a -G docker $cfn_cluster_user
-#			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-#			chmod +x /usr/local/bin/docker-compose
-#		;;
-#		esac
-#	;;
-#esac
+##to be replaced with yum -y install docker-compose as the repository problem is fixed
+		curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+		chmod +x /usr/local/bin/docker-compose
+	;;
+	
+	centos)
+		version=$(rpm --eval %{centos_ver})
+		echo ${version} >> /home/centos/idio.txt
+		case "${version}" in
+		8)
+			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+			dnf install docker-ce --nobest -y
+			systemctl enable --now docker
+			usermod -a -G docker $cfn_cluster_user
+			echo "middle docker" >> /home/centos/idio.txt
+			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+			chmod +x /usr/local/bin/docker-compose
+			echo "end docker" >> /home/centos/idio.txt
+
+		;;
+		7)
+			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+			yum install docker-ce docker-ce-cli containerd.io -y
+			systemctl start docker
+			usermod -a -G docker $cfn_cluster_user
+			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+			chmod +x /usr/local/bin/docker-compose
+		;;
+		esac
+	;;
+esac
 
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
+
+echo ${monitoring_dir_name} >> /home/centos/idio.txt
+echo ${monitoring_home} >> /home/centos/idio.txt
 
 case "${cfn_node_type}" in
 	MasterServer)
@@ -68,6 +66,15 @@ case "${cfn_node_type}" in
 		cluster_config_version=$(cat /etc/chef/dna.json | grep \"cluster_config_version\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		log_group_names="\/aws\/parallelcluster\/$(echo ${stack_name} | cut -d "-" -f2-)"
 		echo "midlle1 " >> /home/centos/tonto.txt
+		echo ${cfn_fsx_fs_id} >> /home/centos/tonto.txt
+		echo ${master_instance_id} >> /home/centos/tonto.txt
+		echo ${cfn_max_queue_size} >> /home/centos/tonto.txt
+		echo ${s3_bucket} >> /home/centos/tonto.txt
+		echo ${cluster_s3_bucket} >> /home/centos/tonto.txt
+		echo ${cluster_config_s3_key} >> /home/centos/tonto.txt
+		echo ${cluster_config_version} >> /home/centos/tonto.txt
+		echo ${log_group_names} >> /home/centos/tonto.txt
+		echo "" >> /home/centos/tonto.txt
 		aws s3api get-object --bucket $cluster_s3_bucket --key $cluster_config_s3_key --region $cfn_region --version-id $cluster_config_version ${monitoring_home}/parallelcluster-setup/cluster-config.json
 
 		yum -y install golang-bin 
@@ -104,27 +111,27 @@ case "${cfn_node_type}" in
 		nginx_ssl_dir="${nginx_dir}/ssl"
 		mkdir -p ${nginx_ssl_dir}
 		echo -e "\nDNS.1=$(ec2-metadata -p | awk '{print $2}')" >> "${nginx_dir}/openssl.cnf"
-		openssl req -new -x509 -nodes -newkey rsa:4096 -days 3650 -keyout "${nginx_ssl_dir}/nginx.key" -out "${nginx_ssl_dir}/nginx.crt" -config "${nginx_dir}/openssl.cnf"
+#		openssl req -new -x509 -nodes -newkey rsa:4096 -days 3650 -keyout "${nginx_ssl_dir}/nginx.key" -out "${nginx_ssl_dir}/nginx.crt" -config "${nginx_dir}/openssl.cnf"
 
 		#give $cfn_cluster_user ownership 
 		chown -R $cfn_cluster_user:$cfn_cluster_user "${nginx_ssl_dir}/nginx.key"
 		chown -R $cfn_cluster_user:$cfn_cluster_user "${nginx_ssl_dir}/nginx.crt"
 
-		/usr/local/bin/docker-compose --env-file /etc/parallelcluster/cfnconfig -f ${monitoring_home}/docker-compose/docker-compose.master.yml -p monitoring-master up -d
+#		/usr/local/bin/docker-compose --env-file /etc/parallelcluster/cfnconfig -f ${monitoring_home}/docker-compose/docker-compose.master.yml -p monitoring-master up -d
 
 		# Download and build prometheus-slurm-exporter 
 		##### Plese note this software package is under GPLv3 License #####
 		# More info here: https://github.com/vpenso/prometheus-slurm-exporter/blob/master/LICENSE
 		cd ${monitoring_home}
 		git clone https://github.com/vpenso/prometheus-slurm-exporter.git
-		cd prometheus-slurm-exporter
-		GOPATH=/root/go-modules-cache HOME=/root go mod download
-		GOPATH=/root/go-modules-cache HOME=/root go build
-		mv ${monitoring_home}/prometheus-slurm-exporter/prometheus-slurm-exporter /usr/bin/prometheus-slurm-exporter
+#		cd prometheus-slurm-exporter
+#		GOPATH=/root/go-modules-cache HOME=/root go mod download
+#		GOPATH=/root/go-modules-cache HOME=/root go build
+#		mv ${monitoring_home}/prometheus-slurm-exporter/prometheus-slurm-exporter /usr/bin/prometheus-slurm-exporter
 		echo "midlle3 " >> /home/centos/tonto.txt
-		systemctl daemon-reload
-		systemctl enable slurm_exporter
-		systemctl start slurm_exporter
+#		systemctl daemon-reload
+#		systemctl enable slurm_exporter
+#		systemctl start slurm_exporter
 		echo "END " >> /home/centos/tonto.txt
 	;;
 
@@ -147,7 +154,7 @@ case "${cfn_node_type}" in
 #			systemctl restart docker
 #			/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.gpu.yml -p monitoring-compute up -d
 #		else
-		/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.yml -p monitoring-compute up -d
+#		/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.yml -p monitoring-compute up -d
 		echo "End postcript" >> /home/centos/III.txt
 #        	fi
 
