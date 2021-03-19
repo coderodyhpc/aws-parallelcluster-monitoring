@@ -11,6 +11,7 @@
 touch /home/centos/idio.txt
 echo ${cfn_cluster_user} >> /home/centos/idio.txt
 systemctl enable --now docker
+sed -i 's/mpirun/mpirun --mca btl_tcp_if_exclude docker0/g' /home/centos/BATCH
 
 #case "${cfn_cluster_user}" in
 #	ec2-user)
