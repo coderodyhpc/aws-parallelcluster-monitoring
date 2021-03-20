@@ -110,27 +110,27 @@ case "${cfn_node_type}" in
 		nginx_ssl_dir="${nginx_dir}/ssl"
 		mkdir -p ${nginx_ssl_dir}
 		echo -e "\nDNS.1=$(ec2-metadata -p | awk '{print $2}')" >> "${nginx_dir}/openssl.cnf"
-#		openssl req -new -x509 -nodes -newkey rsa:4096 -days 3650 -keyout "${nginx_ssl_dir}/nginx.key" -out "${nginx_ssl_dir}/nginx.crt" -config "${nginx_dir}/openssl.cnf"
+		openssl req -new -x509 -nodes -newkey rsa:4096 -days 3650 -keyout "${nginx_ssl_dir}/nginx.key" -out "${nginx_ssl_dir}/nginx.crt" -config "${nginx_dir}/openssl.cnf"
 
 		#give $cfn_cluster_user ownership 
 		chown -R $cfn_cluster_user:$cfn_cluster_user "${nginx_ssl_dir}/nginx.key"
 		chown -R $cfn_cluster_user:$cfn_cluster_user "${nginx_ssl_dir}/nginx.crt"
 
-#		/usr/local/bin/docker-compose --env-file /etc/parallelcluster/cfnconfig -f ${monitoring_home}/docker-compose/docker-compose.master.yml -p monitoring-master up -d
+		/usr/local/bin/docker-compose --env-file /etc/parallelcluster/cfnconfig -f ${monitoring_home}/docker-compose/docker-compose.master.yml -p monitoring-master up -d
 
 		# Download and build prometheus-slurm-exporter 
 		##### Plese note this software package is under GPLv3 License #####
 		# More info here: https://github.com/vpenso/prometheus-slurm-exporter/blob/master/LICENSE
 		cd ${monitoring_home}
 		git clone https://github.com/vpenso/prometheus-slurm-exporter.git
-#		cd prometheus-slurm-exporter
-#		GOPATH=/root/go-modules-cache HOME=/root go mod download
-#		GOPATH=/root/go-modules-cache HOME=/root go build
-#		mv ${monitoring_home}/prometheus-slurm-exporter/prometheus-slurm-exporter /usr/bin/prometheus-slurm-exporter
+		cd prometheus-slurm-exporter
+		GOPATH=/root/go-modules-cache HOME=/root go mod download
+		GOPATH=/root/go-modules-cache HOME=/root go build
+		mv ${monitoring_home}/prometheus-slurm-exporter/prometheus-slurm-exporter /usr/bin/prometheus-slurm-exporter
 		echo "midlle3 " >> /home/centos/tonto.txt
-#		systemctl daemon-reload
-#		systemctl enable slurm_exporter
-#		systemctl start slurm_exporter
+		systemctl daemon-reload
+		systemctl enable slurm_exporter
+		systemctl start slurm_exporter
 		echo "END " >> /home/centos/tonto.txt
 	;;
 
