@@ -45,6 +45,8 @@ case "${cfn_cluster_user}" in
 	;;
 esac
 
+continere="mpirun --mca btl_tcp_if_include eth0"
+sed -i 's/mpirun/${continere}/g' /home/centos/BATCH
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 
