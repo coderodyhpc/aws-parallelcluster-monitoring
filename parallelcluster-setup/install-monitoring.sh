@@ -1,56 +1,20 @@
 #!/bin/bash -i
 #
-#
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
-#
 #
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
 touch /home/centos/idio.txt
 echo ${cfn_cluster_user} >> /home/centos/idio.txt
+dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+dnf install docker-ce --nobest -y
 systemctl enable --now docker
-sed -i 's/mpirun/mpirun --mca btl_tcp_if_exclude docker0/g' /home/centos/BATCH
+usermod -a -G docker centos
+python3 -m pip install docker-compose
+chmod +x /usr/local/bin/docker-compose
 
-#case "${cfn_cluster_user}" in
-#	ec2-user)
-#		yum -y install docker
-#		service docker start
-#		chkconfig docker on
-#		usermod -a -G docker $cfn_cluster_user
-#
-##to be replaced with yum -y install docker-compose as the repository problem is fixed
-#		curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#		chmod +x /usr/local/bin/docker-compose
-#	;;
-	
-#	centos)
-#		version=$(rpm --eval %{centos_ver})
-#		echo ${version} >> /home/centos/idio.txt
-#		case "${version}" in
-#		8)
-#			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-#			dnf install docker-ce --nobest -y
-#			systemctl enable --now docker
-#			usermod -a -G docker $cfn_cluster_user
-#			echo "middle docker" >> /home/centos/idio.txt
-#			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-#			chmod +x /usr/local/bin/docker-compose
-#			echo "end docker" >> /home/centos/idio.txt
-
-#		;;
-#		7)
-#			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-#			yum install docker-ce docker-ce-cli containerd.io -y
-#			systemctl start docker
-#			usermod -a -G docker $cfn_cluster_user
-#			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-#			chmod +x /usr/local/bin/docker-compose
-#		;;
-#		esac
-#	;;
-#esac
+#sed -i 's/mpirun/mpirun --mca btl_tcp_if_exclude docker0/g' /home/centos/BATCH
 
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
@@ -131,26 +95,9 @@ case "${cfn_node_type}" in
 
 	ComputeFleet)
 		compute_instance_type=$(ec2-metadata -t | awk '{print $2}')
-#		gpu_instances="[pg][2-9].*\.[0-9]*[x]*large"
 		touch /home/centos/III.txt
 		echo $compute_instance_type >> /home/centos/III.txt
-#		echo $compute_instance_type >> /home/centos/III.txt
-#		if [[ $compute_instance_type =~ $gpu_instances ]]; then
-#			distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-#			curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | tee /etc/yum.repos.d/nvidia-docker.repo
-#			if [[${cfn_cluster_user} == centos]] && [[${version} == 8]]; then
-#				dnf -y clean expire-cache
-#				dnf -y install nvidia-docker2
-#			else
-#				yum -y clean expire-cache
-#				yum -y install nvidia-docker2
-#			fi
-#			systemctl restart docker
-#			/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.gpu.yml -p monitoring-compute up -d
-#		else
 		/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.yml -p monitoring-compute up -d
 		echo "End postcript" >> /home/centos/III.txt
-#        	fi
-
 	;;
 esac
