@@ -19,8 +19,14 @@ chmod +x /usr/local/bin/docker-compose
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 
+echo ${monitoring_dir_name} >> /home/centos/idio.txt
+echo ${monitoring_home} >> /home/centos/idio.txt
+
 case "${cfn_node_type}" in
 	MasterServer)
+		echo "Master Server INI!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		echo ""
+		echo ""
 		touch /home/centos/tonto.txt
 		#cfn_efs=$(cat /etc/chef/dna.json | grep \"cfn_efs\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		#cfn_cluster_cw_logging_enabled=$(cat /etc/chef/dna.json | grep \"cfn_cluster_cw_logging_enabled\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
@@ -46,7 +52,7 @@ case "${cfn_node_type}" in
 	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /usr/local/bin/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
 		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /usr/local/bin/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
 
-#		echo "midlle2 " >> /home/centos/tonto.txt
+		echo "midlle2 " >> /home/centos/tonto.txt
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
 		sed -i "s/__INSTANCE_ID__/${master_instance_id}/g"  	${monitoring_home}/grafana/dashboards/ParallelCluster.json 
