@@ -40,10 +40,10 @@ case "${cfn_cluster_user}" in
 esac
 
 continere="mpirun --mca btl_tcp_if_include eth0"
-sed -i 's/mpirun/${continere}/g' /home/centos/BATCH
+#sed -i 's/mpirun/${continere}/g' /home/centos/BATCH
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
-
+echo ${monitoring_dir_name},${continere} 
 case "${cfn_node_type}" in
 	MasterServer)
 		cfn_fsx_fs_id=$(cat /etc/chef/dna.json | grep \"cfn_fsx_fs_id\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
