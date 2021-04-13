@@ -6,7 +6,7 @@
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
 touch /home/centos/idio.txt
-echo ${cfn_cluster_user} >> /home/centos/idio.txt
+
 dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 dnf install docker-ce --nobest -y
 systemctl enable --now docker
@@ -14,21 +14,15 @@ usermod -a -G docker centos
 python3 -m pip install docker-compose
 chmod +x /usr/local/bin/docker-compose
 
-#sed -i 's/mpirun/mpirun --mca btl_tcp_if_exclude docker0/g' /home/centos/BATCH
-
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 
 echo ${monitoring_dir_name} >> /home/centos/idio.txt
 echo ${monitoring_home} >> /home/centos/idio.txt
 
-grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
-
 case "${cfn_node_type}" in
 	MasterServer)
-		echo "Master Server INI!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-		echo ""
-		echo ""
+		grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
 		touch /home/centos/tonto.txt
 		#cfn_efs=$(cat /etc/chef/dna.json | grep \"cfn_efs\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		#cfn_cluster_cw_logging_enabled=$(cat /etc/chef/dna.json | grep \"cfn_cluster_cw_logging_enabled\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
@@ -103,9 +97,6 @@ case "${cfn_node_type}" in
 
 	ComputeFleet)
 		compute_instance_type=$(ec2-metadata -t | awk '{print $2}')
-		touch /home/centos/III.txt
-		echo $compute_instance_type >> /home/centos/III.txt
 		/usr/local/bin/docker-compose -f /home/${cfn_cluster_user}/${monitoring_dir_name}/docker-compose/docker-compose.compute.yml -p monitoring-compute up -d
-		echo "End postcript" >> /home/centos/III.txt
 	;;
 esac
