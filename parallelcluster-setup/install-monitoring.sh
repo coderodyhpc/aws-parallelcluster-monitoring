@@ -22,6 +22,8 @@ monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 echo ${monitoring_dir_name} >> /home/centos/idio.txt
 echo ${monitoring_home} >> /home/centos/idio.txt
 
+grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
+
 case "${cfn_node_type}" in
 	MasterServer)
 		echo "Master Server INI!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
