@@ -9,6 +9,9 @@
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
 
+touch /home/centos/idio.txt
+echo ${cfn_cluster_user} >> /home/ec2-user/idio.txt
+
 yum -y install docker
 service docker start
 chkconfig docker on
@@ -21,9 +24,15 @@ chmod +x /usr/local/bin/docker-compose
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 
+echo ${monitoring_dir_name} >> /home/ec2-user/idio.txt
+echo ${monitoring_home} >> /home/ec2-user/idio.txt
+
 case "${cfn_node_type}" in
 	MasterServer)
-
+		echo "Master Server INI!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >> /home/ec2-user/idio.txt
+		echo "" >> /home/ec2-user/idio.txt
+		echo "" >> /home/ec2-user/idio.txt
+		
 		#cfn_efs=$(cat /etc/chef/dna.json | grep \"cfn_efs\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		#cfn_cluster_cw_logging_enabled=$(cat /etc/chef/dna.json | grep \"cfn_cluster_cw_logging_enabled\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		cfn_fsx_fs_id=$(cat /etc/chef/dna.json | grep \"cfn_fsx_fs_id\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
