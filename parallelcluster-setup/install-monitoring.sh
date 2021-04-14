@@ -5,7 +5,6 @@
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
-touch /home/centos/idio.txt
 
 dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 dnf install docker-ce --nobest -y
@@ -13,17 +12,18 @@ systemctl enable --now docker
 usermod -a -G docker centos
 python3 -m pip install docker-compose
 chmod +x /usr/local/bin/docker-compose
+python3 -m pip uninstall requests -y
+python3 -m pip install requests
+python3 -m pip install botocore
+
 
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 
-echo ${monitoring_dir_name} >> /home/centos/idio.txt
-echo ${monitoring_home} >> /home/centos/idio.txt
-
 case "${cfn_node_type}" in
 	MasterServer)
 		grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
-		touch /home/centos/tonto.txt
+
 		#cfn_efs=$(cat /etc/chef/dna.json | grep \"cfn_efs\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		#cfn_cluster_cw_logging_enabled=$(cat /etc/chef/dna.json | grep \"cfn_cluster_cw_logging_enabled\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		cfn_fsx_fs_id=$(cat /etc/chef/dna.json | grep \"cfn_fsx_fs_id\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
@@ -34,7 +34,6 @@ case "${cfn_node_type}" in
 		cluster_config_s3_key=$(cat /etc/chef/dna.json | grep \"cluster_config_s3_key\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		cluster_config_version=$(cat /etc/chef/dna.json | grep \"cluster_config_version\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		log_group_names="\/aws\/parallelcluster\/$(echo ${stack_name} | cut -d "-" -f2-)"
-		echo "midlle1 " >> /home/centos/tonto.txt
 		aws s3api get-object --bucket $cluster_s3_bucket --key $cluster_config_s3_key --region $cfn_region --version-id $cluster_config_version ${monitoring_home}/parallelcluster-setup/cluster-config.json
 
 		yum -y install golang-bin 
@@ -48,7 +47,6 @@ case "${cfn_node_type}" in
 	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /usr/local/bin/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
 		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /usr/local/bin/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
 
-		echo "midlle2 " >> /home/centos/tonto.txt
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
 		sed -i "s/__INSTANCE_ID__/${master_instance_id}/g"  	${monitoring_home}/grafana/dashboards/ParallelCluster.json 
@@ -88,11 +86,10 @@ case "${cfn_node_type}" in
 		GOPATH=/root/go-modules-cache HOME=/root go mod download
 		GOPATH=/root/go-modules-cache HOME=/root go build
 		mv ${monitoring_home}/prometheus-slurm-exporter/prometheus-slurm-exporter /usr/bin/prometheus-slurm-exporter
-		echo "midlle3 " >> /home/centos/tonto.txt
 		systemctl daemon-reload
 		systemctl enable slurm_exporter
 		systemctl start slurm_exporter
-		echo "END " >> /home/centos/tonto.txt
+		rm /home/centos/coderodyhpc-aws-parallelcluster-monitoring.tar.gz
 	;;
 
 	ComputeFleet)
