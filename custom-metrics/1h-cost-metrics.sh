@@ -1,16 +1,11 @@
 #!/bin/bash
-#
-#
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
-#
-#
+
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
 
 export AWS_DEFAULT_REGION=$cfn_region
-aws_region_long_name=$(python /usr/local/bin/aws-region.py $cfn_region)
+aws_region_long_name=$(python3 /usr/local/bin/aws-region.py $cfn_region)
 
 masterInstanceType=$(ec2-metadata -t | awk '{print $2}')
 masterInstanceId=$(ec2-metadata -i | awk '{print $2}')
