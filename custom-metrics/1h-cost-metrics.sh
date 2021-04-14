@@ -9,31 +9,7 @@ aws_region_long_name=$(python3 /usr/local/bin/aws-region.py $cfn_region)
 
 masterInstanceType=$(ec2-metadata -t | awk '{print $2}')
 masterInstanceId=$(ec2-metadata -i | awk '{print $2}')
-s3_bucket=$(echo $cfn_postinstall | sed "s/s3:\/\///g;s/\/.*//")
-s3_size_gb=$(echo "$(aws s3api list-objects --bucket $s3_bucket --output json --query "[sum(Contents[].Size)]"| sed -n 2p | tr -d ' ') / 1024 / 1024 / 1024" | bc)
 
-
-#retrieve the s3 cost
-if [[ $s3_size_gb -le 51200 ]]; then
-  s3_range=51200
-elif [[ $VAR -le 512000 ]]; then
-  s3_range=512000
-else
-  s3_range="Inf"
-fi
-
-####################### S3 #########################
-
-s3_cost_gb_month=$(aws --region us-east-1 pricing get-products \
-  --service-code AmazonS3 \
-  --filters 'Type=TERM_MATCH,Field=location,Value='"${aws_region_long_name}" \
-            'Type=TERM_MATCH,Field=storageClass,Value=General Purpose' \
-  --query 'PriceList[0]' --output text \
-  | jq -r --arg endRange $s3_range '.terms.OnDemand | to_entries[] | .value.priceDimensions | to_entries[].value | select(.endRange==$endRange).pricePerUnit.USD')
-
-s3=$(echo "scale=2; $s3_cost_gb_month * $s3_size_gb / 720" | bc)
-echo "s3_cost $s3" | curl --data-binary @- http://127.0.0.1:9091/metrics/job/cost
-  
 
 ####################### Master #########################
 master_node_h_price=$(aws pricing get-products \
