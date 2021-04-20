@@ -28,7 +28,7 @@
       "collapsed": false,
       "datasource": null,
       "gridPos": {
-        "h": 1,
+        "h": 2,
         "w": 24,
         "x": 0,
         "y": 0
@@ -36,7 +36,6 @@
       "id": 40,
       "panels": [],
       "fontFamily": "Exo2",
-      "fontSize": 12,
       "title": "Scheduler Stats",
       "type": "row"
     },
@@ -76,7 +75,7 @@
         "h": 6,
         "w": 4,
         "x": 0,
-        "y": 11
+        "y": 2
       },
       "id": 48,
       "options": {
@@ -123,10 +122,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 9,
         "x": 4,
-        "y": 11
+        "y": 2
       },
       "hiddenSeries": false,
       "id": 59,
@@ -296,10 +295,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 11,
         "x": 13,
-        "y": 11
+        "y": 2
       },
       "hiddenSeries": false,
       "id": 57,
@@ -462,7 +461,7 @@
         "h": 6,
         "w": 4,
         "x": 0,
-        "y": 17
+        "y": 9
       },
       "id": 47,
       "options": {
@@ -497,10 +496,10 @@
       "collapsed": false,
       "datasource": null,
       "gridPos": {
-        "h": 1,
+        "h": 2,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 15
       },
       "id": 45,
       "panels": [],
@@ -518,10 +517,10 @@
       },
       "fontSize": "110%",
       "gridPos": {
-        "h": 9,
+        "h": 6,
         "w": 8,
         "x": 0,
-        "y": 1
+        "y": 17
       },
       "id": 50,
       "links": [],
@@ -733,10 +732,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 6,
         "w": 8,
         "x": 8,
-        "y": 1
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 52,
@@ -892,10 +891,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 6,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 53,
