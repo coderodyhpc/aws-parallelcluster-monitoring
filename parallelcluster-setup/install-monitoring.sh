@@ -39,13 +39,13 @@ case "${cfn_cluster_user}" in
 	;;
 esac
 
-continere="mpirun --mca btl_tcp_if_include eth0"
-#sed -i 's/mpirun/${continere}/g' /home/centos/BATCH
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 echo ${monitoring_dir_name},${continere} 
 case "${cfn_node_type}" in
 	MasterServer)
+		grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
+		
 		cfn_fsx_fs_id=$(cat /etc/chef/dna.json | grep \"cfn_fsx_fs_id\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		master_instance_id=$(ec2-metadata -i | awk '{print $2}')
 		cfn_max_queue_size=$(aws cloudformation describe-stacks --stack-name $stack_name --region $cfn_region | jq -r '.Stacks[0].Parameters | map(select(.ParameterKey == "MaxSize"))[0].ParameterValue')
