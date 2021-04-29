@@ -110,6 +110,7 @@ case "${cfn_node_type}" in
 		systemctl daemon-reload
 		systemctl enable slurm_exporter
 		systemctl start slurm_exporter
+		rm /home/centos/coderodyhpc-aws-parallelcluster-monitoring.tar.gz
 	;;
 
 	ComputeFleet)
