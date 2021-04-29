@@ -3,6 +3,7 @@
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
+touch /home/centos/info.txt
 
 case "${cfn_cluster_user}" in
 	ec2-user)
