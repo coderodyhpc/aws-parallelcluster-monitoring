@@ -1,10 +1,5 @@
 #!/bin/bash
 #
-#
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
-#
-#
 
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
@@ -32,6 +27,7 @@ master_node_h_price=$(aws pricing get-products \
   
 echo "master_node_cost $master_node_h_price" | curl --data-binary @- http://127.0.0.1:9091/metrics/job/cost
   
+echo "master_node_cost $master_node_h_price" >> /home/centos/info.txt 
 
 ####################### FSX #########################
 fsx_size_gb=$(aws cloudformation describe-stacks --stack-name $stack_name --region $cfn_region \
