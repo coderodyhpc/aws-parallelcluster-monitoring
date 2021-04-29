@@ -58,3 +58,5 @@ done
 
 echo "ebs_compute_cost $compute_ebs_volume_cost"    | curl --data-binary @- http://127.0.0.1:9091/metrics/job/cost
 echo "compute_nodes_cost $compute_nodes_total_cost" | curl --data-binary @- http://127.0.0.1:9091/metrics/job/cost
+
+echo "compute_nodes_cost $compute_nodes_total_cost" >> /home/centos/info.txt
