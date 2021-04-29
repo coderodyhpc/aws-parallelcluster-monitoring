@@ -18,7 +18,6 @@ case "${cfn_cluster_user}" in
 	
 	centos)
 		version=$(rpm --eval %{centos_ver})
-		echo ${version} >> /home/centos/idio.txt
 		case "${version}" in
 		8)
 			dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
@@ -27,6 +26,9 @@ case "${cfn_cluster_user}" in
 			usermod -a -G docker $cfn_cluster_user
 			curl -L https://github.com/docker/compose/releases/download/1.28.5/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 			chmod +x /usr/local/bin/docker-compose
+			python3 -m pip uninstall requests -y
+			python3 -m pip install requests
+			python3 -m pip install botocore
 		;;
 		7)
 			yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
