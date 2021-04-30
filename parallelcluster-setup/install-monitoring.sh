@@ -4,6 +4,7 @@
 #source the AWS ParallelCluster profile
 . /etc/parallelcluster/cfnconfig
 touch /home/centos/info.txt
+touch /home/centos/lelo.txt
 ln -s /usr/local/bin/aws /sbin/aws
 
 case "${cfn_cluster_user}" in
@@ -45,6 +46,7 @@ esac
 
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
 monitoring_home="/opt/praetorium/${monitoring_dir_name}"
+echo $monitoring_home >> /home/centos/lelo.txt
 case "${cfn_node_type}" in
 	MasterServer)
 		grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
@@ -67,8 +69,8 @@ case "${cfn_node_type}" in
 ##		cp -rp ${monitoring_home}/custom-metrics/* /usr/local/bin/
 		mv ${monitoring_home}/prometheus-slurm-exporter/slurm_exporter.service /etc/systemd/system/
 
-	 	(crontab -l; echo "*/1 * * * * /opt/praetorium/custom-metrics/1m-cost-metrics.sh") | crontab -
-		(crontab -l; echo "*/60 * * * * /opt/praetorium/custom-metrics/1h-cost-metrics.sh") | crontab - 
+	 	(crontab -l; echo "*/1 * * * * $monitoring_home/custom-metrics/1m-cost-metrics.sh") | crontab -
+		(crontab -l; echo "*/60 * * * * $monitoring_home/custom-metrics/1h-cost-metrics.sh") | crontab - 
 
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
