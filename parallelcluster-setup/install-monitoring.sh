@@ -44,8 +44,7 @@ case "${cfn_cluster_user}" in
 esac
 
 monitoring_dir_name=$(echo ${cfn_postinstall_args}| cut -d ',' -f 2 )
-monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
-echo ${monitoring_dir_name},${continere} 
+monitoring_home="/opt/praetorium/${monitoring_dir_name}"
 case "${cfn_node_type}" in
 	MasterServer)
 		grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
@@ -65,11 +64,11 @@ case "${cfn_node_type}" in
 		chown $cfn_cluster_user:$cfn_cluster_user -R /home/$cfn_cluster_user
 		chmod +x ${monitoring_home}/custom-metrics/* 
 
-		cp -rp ${monitoring_home}/custom-metrics/* /usr/local/bin/
+##		cp -rp ${monitoring_home}/custom-metrics/* /usr/local/bin/
 		mv ${monitoring_home}/prometheus-slurm-exporter/slurm_exporter.service /etc/systemd/system/
 
-	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /usr/local/bin/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
-		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /usr/local/bin/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
+	 	(crontab -l; echo "*/1 * * * * /opt/praetorium/custom-metrics/1m-cost-metrics.sh") | crontab -
+		(crontab -l; echo "*/60 * * * * /opt/praetorium/custom-metrics/1h-cost-metrics.sh") | crontab - 
 
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
