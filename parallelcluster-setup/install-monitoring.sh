@@ -68,9 +68,6 @@ case "${cfn_node_type}" in
 		cp -rp ${monitoring_home}/custom-metrics/* /usr/local/bin/
 		mv ${monitoring_home}/prometheus-slurm-exporter/slurm_exporter.service /etc/systemd/system/
 
-	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /home/centos/coderodyhpc-aws-parallelcluster-monitoring/custom-metrics/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
-		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /home/centos/coderodyhpc-aws-parallelcluster-monitoring/custom-metrics/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
-
 		# replace tokens 
 		sed -i "s/_S3_BUCKET_/${s3_bucket}/g"               	${monitoring_home}/grafana/dashboards/ParallelCluster.json
 		sed -i "s/__INSTANCE_ID__/${master_instance_id}/g"  	${monitoring_home}/grafana/dashboards/ParallelCluster.json 
@@ -114,6 +111,8 @@ case "${cfn_node_type}" in
 		systemctl enable slurm_exporter
 		systemctl start slurm_exporter
 		rm /home/centos/coderodyhpc-aws-parallelcluster-monitoring.tar.gz
+	 	(crontab -l -u $cfn_cluster_user; echo "*/1 * * * * /usr/local/bin/custom-metrics/1m-cost-metrics.sh") | crontab -u $cfn_cluster_user -
+		(crontab -l -u $cfn_cluster_user; echo "*/60 * * * * /usr/local/bin/custom-metrics/1h-cost-metrics.sh") | crontab -u $cfn_cluster_user - 
 	;;
 
 	ComputeFleet)
