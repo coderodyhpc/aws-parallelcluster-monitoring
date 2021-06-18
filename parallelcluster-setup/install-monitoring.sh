@@ -48,7 +48,7 @@ monitoring_home="/home/${cfn_cluster_user}/${monitoring_dir_name}"
 echo ${monitoring_dir_name},${continere} 
 case "${cfn_node_type}" in
 	MasterServer)
-		grep -rl 'mpirun' /home/centos/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
+		grep -rl 'mpirun' /home/centos/CLUSTERs/BATCH | xargs sed -i 's/mpirun/mpirun --mca btl_tcp_if_include eth0/g'
 		
 		cfn_fsx_fs_id=$(cat /etc/chef/dna.json | grep \"cfn_fsx_fs_id\" | awk '{print $2}' | sed "s/\",//g;s/\"//g")
 		master_instance_id=$(ec2-metadata -i | awk '{print $2}')
