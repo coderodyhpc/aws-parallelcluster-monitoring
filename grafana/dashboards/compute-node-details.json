@@ -2192,7 +2192,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Compute Node Details",
+  "title": "WRF cluster on AWS-Graviton2 - Compute instance details",
   "uid": "qI8VfvXZz",
   "version": 1
 }
