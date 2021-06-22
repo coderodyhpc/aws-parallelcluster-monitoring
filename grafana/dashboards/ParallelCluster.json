@@ -28,478 +28,10 @@
       "collapsed": false,
       "datasource": null,
       "gridPos": {
-        "h": 2,
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
-      },
-      "id": 40,
-      "panels": [],
-      "fontFamily": "Exo2",
-      "title": "Scheduler Stats",
-      "type": "row"
-    },
-    {
-      "datasource": "prometheus",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "decimals": 0,
-          "displayName": "Jobs",
-          "mappings": [],
-          "max": 6,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 3.01
-              },
-              {
-                "color": "red",
-                "value": 5.01
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 0,
-        "y": 2
-      },
-      "id": 48,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "7.0.6",
-      "targets": [
-        {
-          "expr": "slurm_queue_configuring",
-          "instant": false,
-          "interval": "1",
-          "intervalFactor": 1,
-          "legendFormat": " ",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Slurm Pending Jobs",
-      "type": "gauge"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "prometheus",
-      "decimals": 0,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 10,
-        "w": 9,
-        "x": 4,
-        "y": 2
-      },
-      "hiddenSeries": false,
-      "id": 59,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "slurm_queue_completing",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Completing Jobs",
-          "refId": "A"
-        },
-        {
-          "expr": "slurm_queue_running",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Running Jobs",
-          "refId": "B"
-        },
-        {
-          "expr": "slurm_queue_pending",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Pending Jobs",
-          "refId": "C"
-        },
-        {
-          "expr": "slurm_queue_completed",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Completed Jobs",
-          "refId": "D"
-        },
-        {
-          "expr": "slurm_queue_timeout",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Timed out Jobs",
-          "refId": "E"
-        },
-        {
-          "expr": "slurm_queue_failed",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Failed Jobs",
-          "refId": "F"
-        },
-        {
-          "expr": "slurm_queue_node_fail",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Failed jobs (due to NodeFail)",
-          "refId": "G"
-        },
-        {
-          "expr": "slurm_queue_suspended",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Suspended Jobs",
-          "refId": "H"
-        },
-        {
-          "expr": "slurm_queue_cancelled",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Cancelled Jobs",
-          "refId": "I"
-        },
-        {
-          "expr": "slurm_queue_preempted",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Preempted Jobs",
-          "refId": "J"
-        },
-        {
-          "expr": "slurm_queue_completing + slurm_queue_running + slurm_queue_pending + slurm_queue_completed + slurm_queue_timeout + slurm_queue_failed + slurm_queue_node_fail + slurm_queue_suspended + slurm_queue_cancelled + slurm_queue_preempted",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Total",
-          "refId": "K"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Total Jobs",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "decimals": 0,
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
-        "Total Nodes": "#052b51"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "prometheus",
-      "decimals": 0,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 10,
-        "w": 11,
-        "x": 13,
-        "y": 2
-      },
-      "hiddenSeries": false,
-      "id": 57,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "slurm_nodes_alloc",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Allocated Nodes",
-          "refId": "A"
-        },
-        {
-          "expr": "slurm_nodes_comp",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Completing Nodes",
-          "refId": "B"
-        },
-        {
-          "expr": "slurm_nodes_idle",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Idle Nodes",
-          "refId": "C"
-        },
-        {
-          "expr": "slurm_nodes_down",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Down Nodes",
-          "refId": "E"
-        },
-        {
-          "expr": "slurm_nodes_drain",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Draining Nodes",
-          "refId": "F"
-        },
-        {
-          "expr": "slurm_nodes_err",
-          "interval": "",
-          "legendFormat": "Nodes in *error* state",
-          "refId": "G"
-        },
-        {
-          "expr": "slurm_nodes_fail",
-          "interval": "",
-          "legendFormat": "Nodes in *fail* state",
-          "refId": "H"
-        },
-        {
-          "expr": "slurm_nodes_alloc + slurm_nodes_down + slurm_nodes_drain + slurm_nodes_idle + slurm_nodes_mix + slurm_nodes_comp + slurm_nodes_maint",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 2,
-          "legendFormat": "Total Nodes",
-          "refId": "D"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Nodes",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "min": "0",
-          "decimals": "0",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "datasource": "prometheus",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "displayName": "Jobs",
-          "mappings": [],
-          "max": 10,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 0,
-        "y": 9
-      },
-      "id": 47,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "7.0.6",
-      "targets": [
-        {
-          "expr": "slurm_queue_running",
-          "instant": false,
-          "interval": "1",
-          "intervalFactor": 1,
-          "legendFormat": "Running",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Slurm Jobs",
-      "type": "gauge"
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 2,
-        "w": 24,
-        "x": 0,
-        "y": 15
+        "y": 31
       },
       "id": 45,
       "panels": [],
@@ -517,10 +49,10 @@
       },
       "fontSize": "110%",
       "gridPos": {
-        "h":  6,
-        "w": 12,
-        "x":  0,
-        "y":  17
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 32
       },
       "id": 50,
       "links": [],
@@ -732,10 +264,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 9,
+        "w": 8,
         "x": 8,
-        "y": 17
+        "y": 32
       },
       "hiddenSeries": false,
       "id": 52,
@@ -891,10 +423,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 9,
+        "w": 8,
         "x": 16,
-        "y": 17
+        "y": 32
       },
       "hiddenSeries": false,
       "id": 53,
@@ -1022,7 +554,474 @@
         "h": 1,
         "w": 24,
         "x": 0,
+        "y": 22
+      },
+      "id": 40,
+      "panels": [],
+      "title": "Scheduler Stats",
+      "type": "row"
+    },
+    {
+      "datasource": "prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 0,
+          "displayName": "Jobs",
+          "mappings": [],
+          "max": 6,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 3.01
+              },
+              {
+                "color": "red",
+                "value": 5.01
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
         "y": 23
+      },
+      "id": 48,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "7.0.6",
+      "targets": [
+        {
+          "expr": "slurm_queue_configuring",
+          "instant": false,
+          "interval": "1",
+          "intervalFactor": 1,
+          "legendFormat": " ",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Slurm Pending Jobs",
+      "type": "gauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 4,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 59,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "slurm_queue_completing",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Completing Jobs",
+          "refId": "A"
+        },
+        {
+          "expr": "slurm_queue_running",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Running Jobs",
+          "refId": "B"
+        },
+        {
+          "expr": "slurm_queue_pending",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Pending Jobs",
+          "refId": "C"
+        },
+        {
+          "expr": "slurm_queue_completed",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Completed Jobs",
+          "refId": "D"
+        },
+        {
+          "expr": "slurm_queue_timeout",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Timed out Jobs",
+          "refId": "E"
+        },
+        {
+          "expr": "slurm_queue_failed",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Failed Jobs",
+          "refId": "F"
+        },
+        {
+          "expr": "slurm_queue_node_fail",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Failed jobs (due to NodeFail)",
+          "refId": "G"
+        },
+        {
+          "expr": "slurm_queue_suspended",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Suspended Jobs",
+          "refId": "H"
+        },
+        {
+          "expr": "slurm_queue_cancelled",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Cancelled Jobs",
+          "refId": "I"
+        },
+        {
+          "expr": "slurm_queue_preempted",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Preempted Jobs",
+          "refId": "J"
+        },
+        {
+          "expr": "slurm_queue_completing + slurm_queue_running + slurm_queue_pending + slurm_queue_completed + slurm_queue_timeout + slurm_queue_failed + slurm_queue_node_fail + slurm_queue_suspended + slurm_queue_cancelled + slurm_queue_preempted",
+          "hide": true,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Total",
+          "refId": "K"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Total Jobs",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "decimals": 0,
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Total Nodes": "#052b51"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 13,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 57,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "slurm_nodes_alloc",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Allocated Nodes",
+          "refId": "A"
+        },
+        {
+          "expr": "slurm_nodes_comp",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Completing Nodes",
+          "refId": "B"
+        },
+        {
+          "expr": "slurm_nodes_idle",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Idle Nodes",
+          "refId": "C"
+        },
+        {
+          "expr": "slurm_nodes_down",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Down Nodes",
+          "refId": "E"
+        },
+        {
+          "expr": "slurm_nodes_drain",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Draining Nodes",
+          "refId": "F"
+        },
+        {
+          "expr": "slurm_nodes_err",
+          "interval": "",
+          "legendFormat": "Nodes in *error* state",
+          "refId": "G"
+        },
+        {
+          "expr": "slurm_nodes_fail",
+          "interval": "",
+          "legendFormat": "Nodes in *fail* state",
+          "refId": "H"
+        },
+        {
+          "expr": "slurm_nodes_alloc + slurm_nodes_down + slurm_nodes_drain + slurm_nodes_idle + slurm_nodes_mix + slurm_nodes_comp + slurm_nodes_maint",
+          "format": "time_series",
+          "instant": false,
+          "intervalFactor": 2,
+          "legendFormat": "Total Nodes",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Nodes",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "min": "0",
+          "decimals": "0",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": "prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "displayName": "Jobs",
+          "mappings": [],
+          "max": 10,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 27
+      },
+      "id": 47,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "7.0.6",
+      "targets": [
+        {
+          "expr": "slurm_queue_running",
+          "instant": false,
+          "interval": "1",
+          "intervalFactor": 1,
+          "legendFormat": "Running",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Slurm Jobs",
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
       },
       "id": 2,
       "panels": [],
@@ -1048,10 +1047,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 0,
-        "y": 24
+        "y": 1
       },
       "id": 6,
       "options": {
@@ -1100,10 +1099,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 2,
-        "y": 24
+        "y": 1
       },
       "id": 31,
       "options": {
@@ -1152,10 +1151,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 4,
-        "y": 24
+        "y": 1
       },
       "id": 17,
       "options": {
@@ -1204,10 +1203,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 6,
-        "y": 24
+        "y": 1
       },
       "id": 32,
       "options": {
@@ -1257,10 +1256,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 8,
-        "y": 24
+        "y": 1
       },
       "id": 16,
       "options": {
@@ -1310,10 +1309,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 10,
-        "y": 24
+        "y": 1
       },
       "id": 33,
       "options": {
@@ -1363,10 +1362,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 12,
-        "y": 24
+        "y": 1
       },
       "id": 24,
       "options": {
@@ -1416,10 +1415,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 14,
-        "y": 24
+        "y": 1
       },
       "id": 34,
       "options": {
@@ -1469,10 +1468,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 16,
-        "y": 24
+        "y": 1
       },
       "id": 18,
       "options": {
@@ -1522,10 +1521,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 18,
-        "y": 24
+        "y": 1
       },
       "id": 35,
       "options": {
@@ -1575,10 +1574,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 20,
-        "y": 24
+        "y": 1
       },
       "id": 25,
       "options": {
@@ -1628,10 +1627,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 2,
         "w": 2,
         "x": 22,
-        "y": 24
+        "y": 1
       },
       "id": 36,
       "options": {
@@ -1676,10 +1675,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 8,
         "x": 0,
-        "y": 28
+        "y": 3
       },
       "hiddenSeries": false,
       "id": 4,
@@ -1777,10 +1776,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 8,
         "x": 8,
-        "y": 28
+        "y": 3
       },
       "hiddenSeries": false,
       "id": 15,
@@ -1879,10 +1878,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 8,
         "x": 16,
-        "y": 28
+        "y": 3
       },
       "hiddenSeries": false,
       "id": 26,
@@ -1975,10 +1974,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 8,
         "x": 16,
-        "y": 34
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 23,
@@ -2065,7 +2064,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 13
       },
       "id": 14,
       "panels": [],
@@ -2092,10 +2091,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 2,
         "w": 6,
         "x": 0,
-        "y": 41
+        "y": 14
       },
       "id": 10,
       "options": {
@@ -2145,10 +2144,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 2,
         "w": 6,
         "x": 6,
-        "y": 41
+        "y": 14
       },
       "id": 28,
       "options": {
@@ -2198,10 +2197,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 2,
         "w": 6,
         "x": 12,
-        "y": 41
+        "y": 14
       },
       "id": 11,
       "options": {
@@ -2251,10 +2250,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 2,
         "w": 6,
         "x": 18,
-        "y": 41
+        "y": 14
       },
       "id": 30,
       "options": {
@@ -2300,10 +2299,10 @@
       "fill": 1,
       "fillGradient": 3,
       "gridPos": {
-        "h": 11,
+        "h": 6,
         "w": 12,
         "x": 0,
-        "y": 46
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 8,
@@ -2403,10 +2402,10 @@
       "fill": 1,
       "fillGradient": 3,
       "gridPos": {
-        "h": 11,
+        "h": 6,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 12,
@@ -2489,6 +2488,246 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 20,
+      "panels": [],
+      "title": "S3 stats",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "cloudwatch",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 58
+      },
+      "hiddenSeries": false,
+      "id": 55,
+      "interval": "",
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null as zero",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1603",
+          "alias": "transmit",
+          "color": "#A352CC"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "dimensions": {
+            "BucketName": "_S3_BUCKET_"
+          },
+          "expression": "",
+          "id": "",
+          "matchExact": false,
+          "metricName": "BytesUploaded",
+          "namespace": "AWS/S3",
+          "period": "",
+          "refId": "A",
+          "region": "__AWS_REGION__",
+          "statistics": [
+            "Sum"
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "S3 Throughput (Upload)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "cloudwatch",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 58
+      },
+      "hiddenSeries": false,
+      "id": 54,
+      "interval": "",
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null as zero",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1603",
+          "alias": "transmit",
+          "color": "#A352CC"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "dimensions": {
+            "BucketName": "_S3_BUCKET_"
+          },
+          "expression": "",
+          "id": "",
+          "matchExact": false,
+          "metricName": "BytesDownloaded",
+          "namespace": "AWS/S3",
+          "period": "",
+          "refId": "A",
+          "region": "__AWS_REGION__",
+          "statistics": [
+            "Sum"
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "S3 Throughput (Download)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "5s",
@@ -2499,7 +2738,7 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -2516,7 +2755,7 @@
     ]
   },
   "timezone": "",
-  "title": "ParallelCluster Summary",
+  "title": "Numerical Weather Prediction on AWS-Graviton2 with WRF - Cluster information",
   "uid": "r9_U2AzGz",
   "version": 1
 }
