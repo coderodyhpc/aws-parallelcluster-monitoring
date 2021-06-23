@@ -230,7 +230,7 @@
     ]
   },
   "timezone": "",
-  "title": "WRFCompute Node List",
+  "title": "WRF cluster - List of compute instances",
   "uid": "SugNQvuWk",
   "version": 1
 }
